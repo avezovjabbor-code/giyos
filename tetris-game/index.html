@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Tetris - Neo Arcade</title>
+  <meta name="description" content="Zamonaviy Neon Cyberpunk uslubidagi Desktop Tetris o'yini. Musiqa, ovoz effektlari va yuqori darajadagi boshqaruv!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-grid"></div>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="game-header">
+      <div class="logo-area">
+        <span class="neon-badge">DESKTOP ARCADE</span>
+        <h1 class="game-title">CYBER<span>TETRIS</span></h1>
+      </div>
+      <div class="header-actions">
+        <button id="btn-sound" class="icon-btn" title="Ovozni yoqish/o'chirish (M)">
+          <span class="icon">🔊</span>
+          <span class="btn-label">OVOZ</span>
+        </button>
+        <button id="btn-music" class="icon-btn" title="Musiqani yoqish/o'chirish">
+          <span class="icon">🎵</span>
+          <span class="btn-label">MUSIQA</span>
+        </button>
+        <button id="btn-pause-header" class="icon-btn" title="Pauza (P / Esc)">
+          <span class="icon">⏸️</span>
+          <span class="btn-label">PAUZA</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Game Section -->
+    <main class="game-layout">
+      <!-- Left Panel: Hold & Stats -->
+      <aside class="panel side-panel left-panel">
+        <!-- Hold Box -->
+        <div class="glass-card hold-card">
+          <div class="card-header">
+            <h3>ZAXIRA</h3>
+            <span class="key-hint">C / Shift</span>
+          </div>
+          <div class="canvas-wrapper mini-wrapper">
+            <canvas id="hold-canvas" width="120" height="120"></canvas>
+          </div>
+        </div>
+
+        <!-- High Score & Stats -->
+        <div class="glass-card stats-card">
+          <div class="stat-item highlight">
+            <span class="stat-label">REKORD</span>
+            <span id="high-score" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">QATORLAR</span>
+            <span id="lines-count" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">BOSQICH</span>
+            <span id="level-count" class="stat-value">1</span>
+          </div>
+        </div>
+
+        <!-- Controls Guide (Quick reference) -->
+        <div class="glass-card controls-guide">
+          <h3>BOSHQARUV</h3>
+          <ul class="control-list">
+            <li><span>⬅️ ➡️ / A D</span> Harakat</li>
+            <li><span>⬆️ / W</span> Aylantirish</li>
+            <li><span>⬇️ / S</span> Sekin tushirish</li>
+            <li><span>Space</span> Tez tushirish</li>
+            <li><span>C / Shift</span> Zaxira</li>
+            <li><span>P / Esc</span> Pauza</li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Center: Main Tetris Board -->
+      <section class="board-container">
+        <div class="board-frame" id="board-frame">
+          <canvas id="tetris-canvas" width="300" height="600"></canvas>
+
+          <!-- Start Screen Overlay -->
+          <div id="start-overlay" class="overlay active">
+            <div class="overlay-content">
+              <div class="glitch-title">TETRIS</div>
+              <p class="overlay-subtitle">Tayyormisiz? O'yinni boshlash uchun tugmani bosing!</p>
+              <button id="btn-start" class="glow-button pulse">
+                <span>O'YINNI BOSHLASH</span>
+                <span class="button-glow"></span>
+              </button>
+              <p class="quick-tip">Klaviatura yoki ekrandagi tugmalardan foydalaning</p>
+            </div>
+          </div>
+
+          <!-- Pause Overlay -->
+          <div id="pause-overlay" class="overlay">
+            <div class="overlay-content">
+              <h2 class="neon-subheading">TO'XTATILDI</h2>
+              <p class="overlay-subtitle">O'yin vaqtincha to'xtatildi</p>
+              <div class="modal-buttons">
+                <button id="btn-resume" class="glow-button">DAVOM ETISH</button>
+                <button id="btn-restart-pause" class="secondary-button">QAYTADAN</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Over Overlay -->
+          <div id="gameover-overlay" class="overlay">
+            <div class="overlay-content">
+              <h2 class="gameover-title">O'YIN TUGADI</h2>
+              <div class="gameover-stats">
+                <div class="final-stat">
+                  <span>To'plangan Ball:</span>
+                  <strong id="final-score">0</strong>
+                </div>
+                <div class="final-stat">
+                  <span>Tozalangan qatorlar:</span>
+                  <strong id="final-lines">0</strong>
+                </div>
+                <div class="final-stat">
+                  <span>Erishilgan bosqich:</span>
+                  <strong id="final-level">1</strong>
+                </div>
+              </div>
+              <div class="new-record-badge" id="new-record-badge">YANGI REKORD! 🏆</div>
+              <button id="btn-play-again" class="glow-button pulse">
+                <span>QAYTADAN O'YNASH</span>
+                <span class="button-glow"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Score & Next pieces -->
+      <aside class="panel side-panel right-panel">
+        <!-- Current Score -->
+        <div class="glass-card score-card">
+          <div class="card-header">
+            <h3>BALL</h3>
+          </div>
+          <div class="score-display">
+            <span id="current-score" class="big-score">0</span>
+          </div>
+        </div>
+
+        <!-- Next Pieces Queue -->
+        <div class="glass-card next-card">
+          <div class="card-header">
+            <h3>KEYINGI</h3>
+          </div>
+          <div class="canvas-wrapper next-wrapper">
+            <canvas id="next-canvas" width="120" height="280"></canvas>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons-card">
+          <button id="btn-quick-restart" class="action-btn" title="O'yinni yangilash (R)">
+            <span>🔄 Yangilash</span>
+          </button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- On-screen mobile/touch/mouse controls bar -->
+    <div class="virtual-controls" id="virtual-controls">
+      <div class="dpad-group">
+        <button class="v-btn" id="v-left" title="Chapga">◀</button>
+        <button class="v-btn" id="v-down" title="Pastga">▼</button>
+        <button class="v-btn" id="v-right" title="O'ngga">▶</button>
+      </div>
+      <div class="action-group">
+        <button class="v-btn v-accent" id="v-hold" title="Zaxira (Hold)">HOLD</button>
+        <button class="v-btn v-accent" id="v-rotate" title="Aylantirish">↻</button>
+        <button class="v-btn v-drop" id="v-hard-drop" title="Tez tushirish">DROP ⚡</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="game-footer">
+      <p>Cyber Tetris Desktop Edition &bull; Ovoz, chiptune musiqa va neon effektlar bilan</p>
+    </footer>
+  </div>
+
+  <script src="audio.js"></script>
+  <script src="tetris.js"></script>
+</body>
+</html>
